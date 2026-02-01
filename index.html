@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Will You Be My Valentine?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      position: relative;
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    #yes {
+      background-color: #ff4d6d;
+      color: white;
+      margin-right: 20px;
+      position: relative;
+    }
+
+    #no {
+      background-color: #cccccc;
+      position: absolute;
+      left: 60%;
+      top: 0;
+    }
+
+    #valentineImage {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Will you be my Valentine? 💖</h1>
+    <button id="yes" onclick="yesClicked()">Yes</button>
+    <button id="no">No</button>
+    <img id="valentineImage" src="us.jpg" alt="Us">
+  </div>
+
+  <script>
+    const noButton = document.getElementById("no");
+    const card = document.querySelector(".card");
+
+    // Move No button randomly within the card whenever the mouse is close
+    card.addEventListener("mousemove", (e) => {
+      const rect = noButton.getBoundingClientRect();
+      const distanceX = e.clientX - (rect.left + rect.width / 2);
+      const distanceY = e.clientY - (rect.top + rect.height / 2);
+      const distance = Math.sqrt(distanceX**2 + distanceY**2);
+
+      if (distance < 100) { // if mouse is within 100px
+        const maxX = card.clientWidth - noButton.offsetWidth;
+        const maxY = card.clientHeight - noButton.offsetHeight;
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+        noButton.style.left = `${newX}px`;
+        noButton.style.top = `${newY}px`;
+      }
+    });
+
+    function yesClicked() {
+      const image = document.getElementById("valentineImage");
+      image.style.display = "block"; // show the image
+      const heading = document.querySelector("h1");
+      heading.textContent = "YAY 💘 Best decision ever.";
+    }
+  </script>
+</body>
+</html>
