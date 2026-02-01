@@ -73,14 +73,14 @@
     const noButton = document.getElementById("no");
     const card = document.querySelector(".card");
 
-    // Move No button randomly within the card whenever the mouse is close
+    // Make No button dodge the cursor
     card.addEventListener("mousemove", (e) => {
       const rect = noButton.getBoundingClientRect();
       const distanceX = e.clientX - (rect.left + rect.width / 2);
       const distanceY = e.clientY - (rect.top + rect.height / 2);
       const distance = Math.sqrt(distanceX**2 + distanceY**2);
 
-      if (distance < 100) { // if mouse is within 100px
+      if (distance < 100) { // if cursor is close
         const maxX = card.clientWidth - noButton.offsetWidth;
         const maxY = card.clientHeight - noButton.offsetHeight;
         const newX = Math.random() * maxX;
@@ -91,10 +91,16 @@
     });
 
     function yesClicked() {
+      // Hide the No button
+      noButton.style.display = "none";
+
+      // Show image
       const image = document.getElementById("valentineImage");
-      image.style.display = "block"; // show the image
+      image.style.display = "block";
+
+      // Change heading
       const heading = document.querySelector("h1");
-      heading.textContent = "YAY 💘 Best decision ever.";
+      heading.textContent = "YAY 💘 Best decision ever!";
     }
   </script>
 </body>
