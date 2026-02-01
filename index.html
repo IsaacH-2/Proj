@@ -12,21 +12,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
     .card {
-      position: relative;
       background: white;
       padding: 40px;
       border-radius: 15px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
       width: 90%;
-      max-width: 500px;
+      max-width: 450px;
+      position: relative;
     }
 
     h1 {
       margin-bottom: 30px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 60px;
     }
 
     button {
@@ -35,73 +41,92 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      position: relative;
+      position: absolute;
     }
 
     #yes {
       background-color: #ff4d6d;
       color: white;
-      margin-right: 20px;
-      position: relative;
+      left: 40%;
     }
 
     #no {
-      background-color: #cccccc;
-      position: absolute;
-      left: 60%;
-      top: 0;
+      background-color: #ccc;
+      left: 55%;
     }
 
-    #valentineImage {
-      margin-top: 20px;
-      max-width: 100%;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      display: none;
+    .confetti {
+      position: fixed;
+      top: -10px;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
+
   <div class="card">
-    <h1>Will you be my Valentine? 💖</h1>
-    <button id="yes" onclick="yesClicked()">Yes</button>
-    <button id="no">No</button>
-    <img id="valentineImage" src="us.jpg" alt="Us">
+    <h1 id="title">Will you be my Valentine? 💖</h1>
+
+    <div class="buttons">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
   </div>
 
   <script>
-    const noButton = document.getElementById("no");
-    const card = document.querySelector(".card");
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const buttons = document.querySelector(".buttons");
 
-    // Make No button dodge the cursor
-    card.addEventListener("mousemove", (e) => {
-      const rect = noButton.getBoundingClientRect();
-      const distanceX = e.clientX - (rect.left + rect.width / 2);
-      const distanceY = e.clientY - (rect.top + rect.height / 2);
-      const distance = Math.sqrt(distanceX**2 + distanceY**2);
+    // Make "No" dodge the cursor
+    noBtn.addEventListener("mouseenter", moveNo);
+    noBtn.addEventListener("mousemove", moveNo);
 
-      if (distance < 100) { // if cursor is close
-        const maxX = card.clientWidth - noButton.offsetWidth;
-        const maxY = card.clientHeight - noButton.offsetHeight;
-        const newX = Math.random() * maxX;
-        const newY = Math.random() * maxY;
-        noButton.style.left = `${newX}px`;
-        noButton.style.top = `${newY}px`;
+    function moveNo() {
+      const maxX = buttons.clientWidth - noBtn.offsetWidth;
+      const maxY = buttons.clientHeight - noBtn.offsetHeight;
+      noBtn.style.left = Math.random() * maxX + "px";
+      noBtn.style.top = Math.random() * maxY + "px";
+    }
+
+    // Yes clicked
+    yesBtn.addEventListener("click", () => {
+      // Remove buttons
+      yesBtn.style.display = "none";
+      noBtn.style.display = "none";
+
+      // Change text
+      document.getElementById("title").textContent =
+        "YAY 💘 Best decision ever!";
+
+      // Confetti
+      for (let i = 0; i < 100; i++) {
+        createConfetti();
       }
     });
 
-    function yesClicked() {
-      // Hide the No button
-      noButton.style.display = "none";
+    function createConfetti() {
+      const confetti = document.createElement("div");
+      confetti.classList.add("confetti");
+      confetti.style.left = Math.random() * window.innerWidth + "px";
+      confetti.style.backgroundColor =
+        ["#ff4d6d", "#ffd166", "#06d6a0", "#4dabf7"][Math.floor(Math.random() * 4)];
+      confetti.style.animationDuration = Math.random() * 2 + 2 + "s";
+      document.body.appendChild(confetti);
 
-      // Show image
-      const image = document.getElementById("valentineImage");
-      image.style.display = "block";
-
-      // Change heading
-      const heading = document.querySelector("h1");
-      heading.textContent = "YAY 💘 Best decision ever!";
+      setTimeout(() => confetti.remove(), 4000);
     }
   </script>
+
 </body>
 </html>
